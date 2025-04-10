@@ -11,8 +11,8 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1 class="lead text-center fs-1 mt-5 mb-4">Website Schema Generator</h1>
-          <form id="schema-type" class="nav justify-content-center mb-5">
+          <h1 class="lead text-center fs-1 my-4">Website Schema Generator</h1>
+          <form id="schema-type" class="nav justify-content-center my-4">
             <li class="nav-item">
               <label for="schemaType" class="form-label my-2 px-2">Schema Type</label>
             </li>
@@ -29,34 +29,40 @@
       </div>
     </div>
   </header>
-  <section class="py-5">
+  <section class="py-4">
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-12">
-          <form id="schemaForm">
-            <div class="mb-3">
-              <label for="primaryName" class="form-label">Primary Name</label>
-              <input type="text" class="form-control" id="primaryName" placeholder="Enter primary name (e.g., website name)">
+          <div class="card border-0 my-3">
+            <div class="card-body p-5">
+              <form id="schemaForm">
+                <div class="mb-3">
+                  <label for="primaryName" class="form-label">Primary Name</label>
+                  <input type="text" class="form-control" id="primaryName" placeholder="Enter primary name (e.g., website name)">
+                </div>
+                <div class="mb-3">
+                  <label for="alternateNames" class="form-label">Alternate Names</label>
+                  <input type="text" class="form-control" id="alternateNames" placeholder="Enter alternate names (comma-separated)">
+                </div>
+                <div class="mb-3">
+                  <label for="url" class="form-label">URL</label>
+                  <input type="text" class="form-control" id="url" placeholder="Enter URL">
+                </div>
+                <div class="text-center">
+                  <button type="button" class="btn rounded-pill text-primary mb-4" id="generateButton">Generate Schema</button>
+                </div>
+              </form>
             </div>
-            <div class="mb-3">
-              <label for="alternateNames" class="form-label">Alternate Names</label>
-              <input type="text" class="form-control" id="alternateNames" placeholder="Enter alternate names (comma-separated)">
-            </div>
-            <div class="mb-3">
-              <label for="url" class="form-label">URL</label>
-              <input type="text" class="form-control" id="url" placeholder="Enter URL">
-            </div>
-            <div class="text-center">
-              <button type="button" class="btn rounded-pill text-primary" id="generateButton">Generate Schema</button>
-            </div>
-          </form>
+          </div>
         </div>
         <div class="col-md-6 col-12">
-          <div>
-            <h2 class="fs-6 mb-2 pb-1">Generated Schema:</h2>
-            <pre id="output" class="border rounded my-2" style="height: 212px;"></pre>
-            <div class="text-center">
-              <button type="button" class="btn rounded-pill text-primary" id="copyButton">Copy to Clipboard</button>
+          <div class="card border-0 my-3">
+            <div class="card-body p-5">
+              <h2 class="fs-6 mb-2 pb-1">Generated Schema:</h2>
+              <pre id="output" class="border rounded my-2" style="height: 212px;"></pre>
+              <div class="text-center">
+                <button type="button" class="btn rounded-pill text-primary mb-4" id="copyButton">Copy to Clipboard</button>
+              </div>
             </div>
           </div>
         </div>
