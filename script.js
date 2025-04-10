@@ -1,19 +1,36 @@
 document.getElementById('generateButton').addEventListener('click', function () {
-    const websiteName = document.getElementById('websiteName').value;
+    const schemaType = document.getElementById('schemaType').value;
+    const primaryName = document.getElementById('primaryName').value;
     const alternateNames = document.getElementById('alternateNames').value.split(',');
-    const websiteURL = document.getElementById('websiteURL').value;
+    const url = document.getElementById('url').value;
   
-    const schema = {
+    let schema = {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": websiteName,
-      "alternateName": alternateNames,
-      "url": websiteURL
+      "@type": schemaType
     };
   
-    // Wrap schema with <script> tags
-    const schemaWithScriptTags = `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
+    // Dynamically add properties based on schema type
+    if (schemaType === "WebSite") {
+      schema.name = primaryName;
+      schema.alternateName = alternateNames;
+      schema.url = url;
+    } else if (schemaType === "BreadcrumbList") {
+      schema.itemListElement = alternateNames.map((name, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": name,
+        "item": url
+      }));
+    } else if (schemaType === "Organization") {
+      schema.name = primaryName;
+      schema.url = url;
+      schema.alternateName = alternateNames;
+    } else if (schemaType === "Store") {
+      schema.name = primaryName;
+      schema.url = url;
+    }
   
+    const schemaWithScriptTags = `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
     document.getElementById('output').textContent = schemaWithScriptTags;
   });
   

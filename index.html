@@ -7,31 +7,44 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <header>
+  <header class="bg-warning">
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1 class="text-center my-5">Website Schema Generator</h1>
+          <h1 class="lead text-center fs-1 mt-5 mb-4">Website Schema Generator</h1>
+          <form id="schema-type" class="nav justify-content-center mb-5">
+            <li class="nav-item">
+              <label for="schemaType" class="form-label my-2 px-2">Schema Type</label>
+            </li>
+            <li class="nav-item">
+              <select id="schemaType" class="form-select shadow-none bg-transparent">
+                <option value="WebSite" selected>WebSite</option>
+                <option value="BreadcrumbList">Breadcrumb List</option>
+                <option value="Organization">Organization</option>
+                <option value="Store">Local Business</option>
+              </select>
+            </li>
+          </form>
         </div>
       </div>
     </div>
   </header>
-  <section>
+  <section class="py-5">
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-12">
           <form id="schemaForm">
             <div class="mb-3">
-              <label for="websiteName" class="form-label">Website Name</label>
-              <input type="text" class="form-control" id="websiteName" placeholder="Enter website name">
+              <label for="primaryName" class="form-label">Primary Name</label>
+              <input type="text" class="form-control" id="primaryName" placeholder="Enter primary name (e.g., website name)">
             </div>
             <div class="mb-3">
               <label for="alternateNames" class="form-label">Alternate Names</label>
               <input type="text" class="form-control" id="alternateNames" placeholder="Enter alternate names (comma-separated)">
             </div>
             <div class="mb-3">
-              <label for="websiteURL" class="form-label">Website URL</label>
-              <input type="text" class="form-control" id="websiteURL" placeholder="Enter website URL">
+              <label for="url" class="form-label">URL</label>
+              <input type="text" class="form-control" id="url" placeholder="Enter URL">
             </div>
             <div class="text-center">
               <button type="button" class="btn rounded-pill text-primary" id="generateButton">Generate Schema</button>
@@ -39,7 +52,7 @@
           </form>
         </div>
         <div class="col-md-6 col-12">
-          <div class="">
+          <div>
             <h2 class="fs-6 mb-2 pb-1">Generated Schema:</h2>
             <pre id="output" class="border rounded my-2" style="height: 212px;"></pre>
             <div class="text-center">
@@ -50,6 +63,17 @@
       </div>
     </div>
   </section>
+  <footer class="bg-dark text-white fixed-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p class="text-center my-3">Website Schema Generator © <script>document.write(new Date().getFullYear());</script>
+                  <a class="nav-link d-inline" href="https://anupammondal.in" alt="Designed &amp; Developed by Anupam Mondal" title="Designed &amp; Developed by Anupam Mondal"> — Anupam Mondal</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
   <script src="script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
