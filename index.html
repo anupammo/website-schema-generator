@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Store Schema Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f1 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding-bottom: 3rem;
+        }
+        
+        .header {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(67, 97, 238, 0.3);
+            padding: 2.5rem 1rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header {
+            background: linear-gradient(120deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border-radius: 16px 16px 0 0 !important;
+            font-weight: 600;
+            padding: 1.2rem 1.5rem;
+            border: none;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.15);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 12px;
+            padding: 0.8rem 1.8rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-outline-secondary {
+            border-radius: 10px;
+        }
+        
+        .output-container {
+            background: #1e293b;
+            border-radius: 16px;
+            color: #cbd5e1;
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .json-key {
+            color: #f8fafc;
+        }
+        
+        .json-string {
+            color: #7dd3fc;
+        }
+        
+        .json-number {
+            color: #fbbf24;
+        }
+        
+        .json-boolean {
+            color: #34d399;
+        }
+        
+        .add-field-btn {
+            background: #eef2ff;
+            color: var(--primary-color);
+            border: 1px dashed var(--primary-color);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            width: 100%;
+            transition: var(--transition);
+        }
+        
+        .add-field-btn:hover {
+            background: #e0e7ff;
+        }
+        
+        .field-group {
+            position: relative;
+            margin-bottom: 0.8rem;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            right: -35px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ef4444;
+            cursor: pointer;
+        }
+        
+        .section-title {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 24px;
+            width: 6px;
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card {
+                border-radius: 12px;
+            }
+            
+            .remove-btn {
+                right: -30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header text-center">
+        <div class="container">
+            <h1 class="display-5 fw-bold mb-3"><i class="fas fa-code me-2"></i>Online Store Schema Generator</h1>
+            <p class="lead mb-0">Fill out the form to create structured data for your online store</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <form id="schemaForm">
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-lg-6">
+                    <!-- Basic Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-store me-2"></i>Store Information
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="storeName" class="form-label">Store Name *</label>
+                                <input type="text" class="form-control" id="storeName" placeholder="Example Online Store" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="storeUrl" class="form-label">Website URL *</label>
+                                <input type="url" class="form-control" id="storeUrl" placeholder="https://www.example.com" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="logoUrl" class="form-label">Logo URL *</label>
+                                <input type="url" class="form-control" id="logoUrl" placeholder="https://www.example.com/logo.png" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Same As URLs</label>
+                                <div id="sameAsContainer">
+                                    <div class="field-group d-flex align-items-center">
+                                        <input type="url" class="form-control sameAs" placeholder="https://social.example.com/profile">
+                                        <span class="remove-btn"><i class="fas fa-times-circle"></i></span>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-field-btn mt-2" id="addSameAs">
+                                    <i class="fas fa-plus me-2"></i>Add Another URL
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-headset me-2"></i>Contact Information
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="contactEmail" class="form-label">Customer Service Email *</label>
+                                <input type="email" class="form-control" id="contactEmail" placeholder="support@example.com" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="contactPhone" class="form-label">Customer Service Phone *</label>
+                                <input type="tel" class="form-control" id="contactPhone" placeholder="+47-99-999-9900" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="col-lg-6">
+                    <!-- Business Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-building me-2"></i>Business Information
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="vatId" class="form-label">VAT ID</label>
+                                <input type="text" class="form-control" id="vatId" placeholder="FR12345678901">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="isoCode" class="form-label">ISO 6523 Code</label>
+                                <input type="text" class="form-control" id="isoCode" placeholder="0199:724500PMK2A2M1SQQ228">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Return Policy -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-undo-alt me-2"></i>Return Policy
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Applicable Countries</label>
+                                <div id="countriesContainer">
+                                    <div class="field-group d-flex align-items-center">
+                                        <input type="text" class="form-control country" placeholder="FR" maxlength="2">
+                                        <span class="remove-btn"><i class="fas fa-times-circle"></i></span>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-field-btn mt-2" id="addCountry">
+                                    <i class="fas fa-plus me-2"></i>Add Another Country
+                                </button>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="returnPolicyCountry" class="form-label">Return Policy Country *</label>
+                                <input type="text" class="form-control" id="returnPolicyCountry" placeholder="FR" maxlength="2" required>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="returnDays" class="form-label">Return Days *</label>
+                                    <input type="number" class="form-control" id="returnDays" placeholder="60" min="1" required>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="returnPolicyCategory" class="form-label">Return Policy Category</label>
+                                    <select class="form-select" id="returnPolicyCategory">
+                                        <option value="https://schema.org/MerchantReturnFiniteReturnWindow" selected>Finite Return Window</option>
+                                        <option value="https://schema.org/MerchantReturnNotPermitted">Return Not Permitted</option>
+                                        <option value="https://schema.org/MerchantReturnUnlimitedWindow">Unlimited Return Window</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="returnMethod" class="form-label">Return Method</label>
+                                    <select class="form-select" id="returnMethod">
+                                        <option value="https://schema.org/ReturnByMail" selected>By Mail</option>
+                                        <option value="https://schema.org/ReturnInStore">In Store</option>
+                                        <option value="https://schema.org/ReturnAtKiosk">At Kiosk</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="returnFees" class="form-label">Return Fees</label>
+                                    <select class="form-select" id="returnFees">
+                                        <option value="https://schema.org/FreeReturn" selected>Free Return</option>
+                                        <option value="https://schema.org/ReturnShippingFees">Customer Pays Shipping</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="refundType" class="form-label">Refund Type</label>
+                                <select class="form-select" id="refundType">
+                                    <option value="https://schema.org/FullRefund" selected>Full Refund</option>
+                                    <option value="https://schema.org/StoreCreditRefund">Store Credit</option>
+                                    <option value="https://schema.org/ExchangeRefund">Exchange</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary btn-lg px-5">
+                    <i class="fas fa-code me-2"></i>Generate Schema
+                </button>
+            </div>
+        </form>
+        
+        <!-- Output Section -->
+        <div class="mt-5" id="outputSection" style="display: none;">
+            <h3 class="section-title">Generated Schema</h3>
+            <p class="text-muted mb-3">Copy and paste this script into your website's HTML to implement structured data.</p>
+            <div class="output-container">
+                <pre id="schemaOutput"></pre>
+            </div>
+            <div class="mt-3 text-center">
+                <button class="btn btn-outline-primary" id="copyButton">
+                    <i class="fas fa-copy me-2"></i>Copy to Clipboard
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add dynamic fields
+        document.getElementById('addSameAs').addEventListener('click', function() {
+            const container = document.getElementById('sameAsContainer');
+            const div = document.createElement('div');
+            div.className = 'field-group d-flex align-items-center';
+            div.innerHTML = `
+                <input type="url" class="form-control sameAs" placeholder="https://social.example.com/profile">
+                <span class="remove-btn"><i class="fas fa-times-circle"></i></span>
+            `;
+            container.appendChild(div);
+        });
+        
+        document.getElementById('addCountry').addEventListener('click', function() {
+            const container = document.getElementById('countriesContainer');
+            const div = document.createElement('div');
+            div.className = 'field-group d-flex align-items-center';
+            div.innerHTML = `
+                <input type="text" class="form-control country" placeholder="CH" maxlength="2">
+                <span class="remove-btn"><i class="fas fa-times-circle"></i></span>
+            `;
+            container.appendChild(div);
+        });
+        
+        // Remove fields
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.remove-btn')) {
+                const fieldGroup = e.target.closest('.field-group');
+                if (fieldGroup && fieldGroup.parentElement.children.length > 1) {
+                    fieldGroup.remove();
+                }
+            }
+        });
+        
+        // Form submission
+        document.getElementById('schemaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const storeName = document.getElementById('storeName').value;
+            const storeUrl = document.getElementById('storeUrl').value;
+            const logoUrl = document.getElementById('logoUrl').value;
+            const contactEmail = document.getElementById('contactEmail').value;
+            const contactPhone = document.getElementById('contactPhone').value;
+            const vatId = document.getElementById('vatId').value;
+            const isoCode = document.getElementById('isoCode').value;
+            const returnPolicyCountry = document.getElementById('returnPolicyCountry').value;
+            const returnDays = document.getElementById('returnDays').value;
+            const returnPolicyCategory = document.getElementById('returnPolicyCategory').value;
+            const returnMethod = document.getElementById('returnMethod').value;
+            const returnFees = document.getElementById('returnFees').value;
+            const refundType = document.getElementById('refundType').value;
+            
+            // Collect arrays
+            const sameAs = Array.from(document.querySelectorAll('.sameAs'))
+                .map(input => input.value)
+                .filter(url => url.trim() !== '');
+                
+            const applicableCountry = Array.from(document.querySelectorAll('.country'))
+                .map(input => input.value.toUpperCase())
+                .filter(country => country.trim() !== '');
+            
+            // Build the schema object
+            const schema = {
+                "@context": "https://schema.org",
+                "@type": "OnlineStore",
+                "name": storeName,
+                "url": storeUrl,
+                "sameAs": sameAs.length > 0 ? sameAs : undefined,
+                "logo": logoUrl,
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "contactType": "Customer Service",
+                    "email": contactEmail,
+                    "telephone": contactPhone
+                },
+                "vatID": vatId || undefined,
+                "iso6523Code": isoCode || undefined,
+                "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": applicableCountry.length > 0 ? applicableCountry : undefined,
+                    "returnPolicyCountry": returnPolicyCountry,
+                    "returnPolicyCategory": returnPolicyCategory,
+                    "merchantReturnDays": parseInt(returnDays),
+                    "returnMethod": returnMethod,
+                    "returnFees": returnFees,
+                    "refundType": refundType
+                }
+            };
+            
+            // Clean up undefined properties
+            Object.keys(schema).forEach(key => schema[key] === undefined && delete schema[key]);
+            Object.keys(schema.contactPoint).forEach(key => schema.contactPoint[key] === undefined && delete schema.contactPoint[key]);
+            Object.keys(schema.hasMerchantReturnPolicy).forEach(key => schema.hasMerchantReturnPolicy[key] === undefined && delete schema.hasMerchantReturnPolicy[key]);
+            
+            // Generate JSON string with indentation
+            const jsonString = JSON.stringify(schema, null, 2);
+            
+            // Create the script tag output
+            const scriptTag = `<script type="application/ld+json">\n${jsonString}\n<\/script>`;
+            
+            // Display the output
+            document.getElementById('schemaOutput').textContent = scriptTag;
+            document.getElementById('outputSection').style.display = 'block';
+            
+            // Scroll to output
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Copy to clipboard
+        document.getElementById('copyButton').addEventListener('click', function() {
+            const output = document.getElementById('schemaOutput').textContent;
+            navigator.clipboard.writeText(output).then(() => {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+        
+        // Initialize with some default values for demonstration
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('storeName').value = 'Example Online Store';
+            document.getElementById('storeUrl').value = 'https://www.example.com';
+            document.getElementById('logoUrl').value = 'https://www.example.com/assets/images/logo.png';
+            document.querySelector('.sameAs').value = 'https://example.net/profile/example12';
+            document.getElementById('contactEmail').value = 'support@example.com';
+            document.getElementById('contactPhone').value = '+47-99-999-9900';
+            document.getElementById('vatId').value = 'FR12345678901';
+            document.getElementById('isoCode').value = '0199:724500PMK2A2M1SQQ228';
+            document.querySelector('.country').value = 'FR';
+            document.getElementById('returnPolicyCountry').value = 'FR';
+        });
+    </script>
+</body>
+</html>
